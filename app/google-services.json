@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "388048312156",
+    "project_id": "melomane-1610901390982",
+    "storage_bucket": "melomane-1610901390982.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:388048312156:android:6791a964faa08588b29399",
+        "android_client_info": {
+          "package_name": "com.example.melomane"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "388048312156-ct6413v9n35gvl06jeq35odq3u8pdm4n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.melomane",
+            "certificate_hash": "f948e4107e7321c24d12d65c39af60cb2a03dc12"
+          }
+        },
+        {
+          "client_id": "388048312156-6oqn70uerkq74j6p2s7j5h4o9chjbdl0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyATK6Ih9e9Ek9bUE4KCT6TSVGwrxhDkCL4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "388048312156-6oqn70uerkq74j6p2s7j5h4o9chjbdl0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
