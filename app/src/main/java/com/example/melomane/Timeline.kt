@@ -21,7 +21,7 @@ class Timeline : AppCompatActivity() {
         mDatabase.addValueEventListener(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 username = snapshot.child("Name").toString()
-                txtName.text = "Hello $username"
+                txtName.text = "Hello"
             }
 
             override fun onCancelled(error: DatabaseError) {
