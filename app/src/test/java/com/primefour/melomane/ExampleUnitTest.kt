@@ -1,4 +1,4 @@
-package com.example.melomane
+package com.primefour.melomane
 
 import org.junit.Test
 

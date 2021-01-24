@@ -1,41 +1,34 @@
 {
   "project_info": {
-    "project_number": "388048312156",
-    "project_id": "melomane-1610901390982",
-    "storage_bucket": "melomane-1610901390982.appspot.com"
+    "project_number": "741156442716",
+    "firebase_url": "https://newagent-8155a.firebaseio.com",
+    "project_id": "newagent-8155a",
+    "storage_bucket": "newagent-8155a.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:388048312156:android:6791a964faa08588b29399",
+        "mobilesdk_app_id": "1:741156442716:android:0a4aebdac115e2b6d28c99",
         "android_client_info": {
-          "package_name": "com.example.melomane"
+          "package_name": "com.primefour.melomane"
         }
       },
       "oauth_client": [
         {
-          "client_id": "388048312156-ct6413v9n35gvl06jeq35odq3u8pdm4n.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.melomane",
-            "certificate_hash": "f948e4107e7321c24d12d65c39af60cb2a03dc12"
-          }
-        },
-        {
-          "client_id": "388048312156-6oqn70uerkq74j6p2s7j5h4o9chjbdl0.apps.googleusercontent.com",
+          "client_id": "741156442716-l3cq09vsuc7plhsc0kg7iqsl1gebdpv2.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyATK6Ih9e9Ek9bUE4KCT6TSVGwrxhDkCL4"
+          "current_key": "AIzaSyCFaLwXoW05cD0c3_axMX0gnO1N8Ec64pE"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "388048312156-6oqn70uerkq74j6p2s7j5h4o9chjbdl0.apps.googleusercontent.com",
+              "client_id": "741156442716-l3cq09vsuc7plhsc0kg7iqsl1gebdpv2.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

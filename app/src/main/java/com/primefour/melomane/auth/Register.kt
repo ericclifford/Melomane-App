@@ -1,6 +1,5 @@
-package com.example.melomane
+package com.primefour.melomane.auth
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Patterns
@@ -12,6 +11,7 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.primefour.melomane.R
 
 class Register : AppCompatActivity() {
 

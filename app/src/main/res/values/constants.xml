@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="redirect_uri">https://www.melomaneapp.com/spotify-oauth-callback</string>
+    <string name="spotify_auth_uri">https://account.spotify.com/authorizer</string>
+    <string name="spotify_profile_uri">https://api.spotify.com/v1/me</string>
+    <string name="spotify_auth_token_uri">https://accounts.spotify.com/api/token</string>
+    <string name="shared_preferences_file">061bd6a5804842292131030101f</string>
+</resources>

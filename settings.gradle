@@ -1,2 +1,4 @@
+include ':utils'
+include ':spotify-auth'
 include ':app'
 rootProject.name = "Melomane"

@@ -18,6 +18,9 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.primefour.melomane.R
+import com.primefour.melomane.auth.Register
+import com.primefour.melomane.auth.Timeline
 
 
 const val RC_SIGN_IN = 123
@@ -28,15 +31,17 @@ class MainActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val btnLogin = findViewById<View>(R.id.btn_login) as Button
-        btnLogin.setOnClickListener(View.OnClickListener {
-            view -> login()
-        })
+        // Just pulling this down because I didn't want to add unused buttons
 
-        val txtRegister = findViewById<View>(R.id.txt_register) as TextView
-        txtRegister.setOnClickListener(View.OnClickListener{
-            view -> register()
-        })
+//        val btnLogin = findViewById<View>(R.id.btn_login) as Button
+//        btnLogin.setOnClickListener(View.OnClickListener {
+//            view -> login()
+//        })
+//
+//        val txtRegister = findViewById<View>(R.id.txt_register) as TextView
+//        txtRegister.setOnClickListener(View.OnClickListener{
+//            view -> register()
+//        })
     }
 
     private fun register() {
