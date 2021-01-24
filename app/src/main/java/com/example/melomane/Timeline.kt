@@ -10,6 +10,7 @@ import com.google.firebase.database.*
 class Timeline : AppCompatActivity() {
 
     lateinit var mDatabase : DatabaseReference
+    lateinit var  username : String
     val mAuth = FirebaseAuth.getInstance()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,8 +20,8 @@ class Timeline : AppCompatActivity() {
         mDatabase = FirebaseDatabase.getInstance().getReference("Names")
         mDatabase.addValueEventListener(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
-                val username = snapshot.child("Name").toString()
-                txtName.text = "Hello "
+                username = snapshot.child("Name").toString()
+                txtName.text = "Hello $username"
             }
 
             override fun onCancelled(error: DatabaseError) {
