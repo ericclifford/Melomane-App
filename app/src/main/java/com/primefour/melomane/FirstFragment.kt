@@ -14,10 +14,13 @@ import com.github.kittinunf.fuel.httpGet
 import com.github.kittinunf.fuel.httpPost
 import com.google.android.material.snackbar.Snackbar
 import com.primefour.melomane.auth.AuthToken
+import com.primefour.melomane.auth.Register
 import com.primefour.utils.with
 import com.spotify.sdk.android.auth.AuthorizationClient
 import com.spotify.sdk.android.auth.AuthorizationRequest
 import com.spotify.sdk.android.auth.AuthorizationResponse
+import com.spotify.sdk.android.authentication.AuthenticationClient
+import com.spotify.sdk.android.authentication.AuthenticationResponse
 
 
 class FirstFragment : Fragment() {
