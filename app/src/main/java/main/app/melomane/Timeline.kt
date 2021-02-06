@@ -1,9 +1,10 @@
-package com.example.melomane
+package main.app.melomane
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
+import main.app.melomane.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 

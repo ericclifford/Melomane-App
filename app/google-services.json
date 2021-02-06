@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:388048312156:android:6791a964faa08588b29399",
         "android_client_info": {
-          "package_name": "com.example.melomane"
+          "package_name": "main.app.melomane"
         }
       },
       "oauth_client": [
@@ -17,7 +17,7 @@
           "client_id": "388048312156-ct6413v9n35gvl06jeq35odq3u8pdm4n.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.melomane",
+            "package_name": "main.app.melomane",
             "certificate_hash": "f948e4107e7321c24d12d65c39af60cb2a03dc12"
           }
         },
