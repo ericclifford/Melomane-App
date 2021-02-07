@@ -51,6 +51,7 @@ dependencies {
     implementation "androidx.navigation:navigation-ui-ktx:2.2.2"
     implementation "com.android.support:multidex:1.0.3"
     implementation "com.github.kittinunf.fuel:fuel:2.3.1"
+    implementation "com.github.kittinunf.fuel:fuel-json:2.3.1"
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'com.google.android.gms:play-services-auth:19.0.0'
     implementation "com.google.code.gson:gson:2.6.1"
@@ -60,6 +61,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth-ktx'
     implementation 'com.jakewharton.timber:timber:4.7.1'
     implementation 'com.spotify.android:auth:1.1.0'
+    implementation 'com.android.volley:volley:1.1.1'
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'

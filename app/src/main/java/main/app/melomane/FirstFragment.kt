@@ -5,23 +5,29 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Base64.*
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import androidx.fragment.app.Fragment
+import com.github.kittinunf.fuel.core.Response
 import com.github.kittinunf.fuel.httpGet
 import com.github.kittinunf.fuel.httpPost
+import com.github.kittinunf.fuel.json.jsonDeserializer
 import com.google.android.material.snackbar.Snackbar
 import main.app.melomane.auth.AuthToken
 import main.app.melomane.auth.Register
-import main.app.melomane.R
 import main.app.utils.with
 import com.spotify.sdk.android.auth.AuthorizationClient
 import com.spotify.sdk.android.auth.AuthorizationRequest
 import com.spotify.sdk.android.auth.AuthorizationResponse
 import com.spotify.sdk.android.authentication.AuthenticationClient
 import com.spotify.sdk.android.authentication.AuthenticationResponse
+import org.json.JSONException
+import org.json.JSONObject
+import kotlin.reflect.typeOf
 
 
 class FirstFragment : Fragment() {
@@ -44,6 +50,7 @@ class FirstFragment : Fragment() {
 
         view.findViewById<Button>(R.id.ViewProfile).setOnClickListener {
             getUserProfile()
+            val text = view.findViewById<View>(R.id.CenterText) as TextView
         }
     }
 
@@ -116,6 +123,7 @@ class FirstFragment : Fragment() {
     private fun getUserProfile() {
         val prefs  = activity?.getPreferences(Context.MODE_PRIVATE) ///(getString("accessToken"), Context.MODE_PRIVATE))
         val accessToken = prefs?.getString("accessToken", null)
+
         getString(R.string.spotify_profile_uri)
             .httpGet()
             .header("Authorization" to "Bearer $accessToken")
@@ -123,6 +131,12 @@ class FirstFragment : Fragment() {
                 val snacks = Snackbar.make(requireActivity().findViewById(R.id.activity_main),
                     "$response.responseMessage", Snackbar.LENGTH_SHORT)
                 snacks.show()
+                print(response)
+                val text = view?.findViewById<View>(R.id.CenterText) as TextView
+                val json = jsonDeserializer()
+                val results = json.deserialize(response).obj()
+                val name = results.getString("display_name")
+                text.text = name.toString()
             }
     }
 
