@@ -14,7 +14,8 @@ object SpotifyAuth {
 
         // Scopes and explanations here: https://developer.spotify.com/documentation/general/guides/scopes/
         val scopes = arrayOf("playlist-modify-public",
-                             "user-library-modify")
+                            "user-library-read",
+                            "user-library-modify")
             .joinToString()
 
         val params = listOf("client_id" to Strings.get(R.string.melomane_client_id),

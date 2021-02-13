@@ -50,7 +50,6 @@ class FirstFragment : Fragment() {
 
         view.findViewById<Button>(R.id.ViewProfile).setOnClickListener {
             getUserProfile()
-            val text = view.findViewById<View>(R.id.CenterText) as TextView
         }
     }
 
@@ -123,7 +122,6 @@ class FirstFragment : Fragment() {
     private fun getUserProfile() {
         val prefs  = activity?.getPreferences(Context.MODE_PRIVATE) ///(getString("accessToken"), Context.MODE_PRIVATE))
         val accessToken = prefs?.getString("accessToken", null)
-
         getString(R.string.spotify_profile_uri)
             .httpGet()
             .header("Authorization" to "Bearer $accessToken")
@@ -132,12 +130,19 @@ class FirstFragment : Fragment() {
                     "$response.responseMessage", Snackbar.LENGTH_SHORT)
                 snacks.show()
                 print(response)
-                val text = view?.findViewById<View>(R.id.CenterText) as TextView
                 val json = jsonDeserializer()
                 val results = json.deserialize(response).obj()
                 val name = results.getString("display_name")
-                text.text = name.toString()
+                val id = results.getString("id")
+                val uri = results.getString("uri")
+                val intent = Intent(getActivity(), Timeline::class.java)
+                intent.putExtra("name", name)
+                intent.putExtra("id", id)
+                intent.putExtra("uri", uri)
+                intent.putExtra("access_token", accessToken)
+                getActivity()?.startActivity(intent)
             }
+
     }
 
     private fun getAuthenticationRequest(): AuthorizationRequest {
