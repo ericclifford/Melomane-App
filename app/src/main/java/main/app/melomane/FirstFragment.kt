@@ -135,12 +135,12 @@ class FirstFragment : Fragment() {
                 val name = results.getString("display_name")
                 val id = results.getString("id")
                 val uri = results.getString("uri")
-                val intent = Intent(getActivity(), Timeline::class.java)
+                val intent = Intent(activity, Timeline::class.java)
                 intent.putExtra("name", name)
                 intent.putExtra("id", id)
                 intent.putExtra("uri", uri)
                 intent.putExtra("access_token", accessToken)
-                getActivity()?.startActivity(intent)
+                activity?.startActivity(intent)
             }
 
     }
@@ -150,7 +150,7 @@ class FirstFragment : Fragment() {
         return AuthorizationRequest.Builder(clientId, AuthorizationResponse.Type.CODE, stringifyRedirectUri())
             .setShowDialog(false)
             .setState(getState())
-            .setScopes(arrayOf("playlist-modify-public"))
+            .setScopes(arrayOf("playlist-modify-public", "user-library-read"))
             .build()
     }
 

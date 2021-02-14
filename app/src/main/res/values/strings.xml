@@ -1,5 +1,10 @@
 <resources>
 
+    <!--
+    See
+    https://developer.android.com/guide/topics/resources/string-resource
+    for explanations, how to use placeholders, etc.
+    -->
     <string name="app_name">Melomane</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
@@ -8,9 +13,12 @@
     <string name="next">Next</string>
     <string name="authorize_spotify">Authorize Spotify</string>
     <string name="previous">Previous</string>
-
+    <string name="view_profile">View Profile</string>
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 
-    <string name="view_profile">View Profile</string>
+    <string name="user_playlists">%s\'s Recent Playlists</string>
+    <!-- Spotify API endpoints -->
+    <string name="spotify_api_user_tracks">https://api.spotify.com/v1/me/tracks</string>
+
 </resources>
