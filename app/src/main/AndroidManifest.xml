@@ -11,6 +11,7 @@
         android:theme="@style/Theme.Melomane">
         <activity android:name=".Register"></activity>
         <activity android:name=".Timeline" />
+        <activity android:name=".PlaylistPage" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

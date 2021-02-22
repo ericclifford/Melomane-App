@@ -150,7 +150,7 @@ class FirstFragment : Fragment() {
         return AuthorizationRequest.Builder(clientId, AuthorizationResponse.Type.CODE, stringifyRedirectUri())
             .setShowDialog(false)
             .setState(getState())
-            .setScopes(arrayOf("playlist-modify-public", "user-library-read"))
+            .setScopes(arrayOf("playlist-modify-public", "user-library-read, user-top-read"))
             .build()
     }
 
