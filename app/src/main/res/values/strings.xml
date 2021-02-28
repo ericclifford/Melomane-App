@@ -20,5 +20,6 @@
     <string name="user_playlists">%s\'s Recent Playlists</string>
     <!-- Spotify API endpoints -->
     <string name="spotify_api_user_tracks">https://api.spotify.com/v1/me/tracks</string>
+    <string name="spotify_api_user_playlists">https://api.spotify.com/v1/me/playlists</string>
 
 </resources>
