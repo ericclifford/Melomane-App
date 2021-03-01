@@ -21,7 +21,7 @@ import org.json.JSONObject
 import org.json.JSONStringer
 import kotlin.reflect.typeOf
 
-class PlaylistPage : AppCompatActivity() {
+class PlaylistPage() : AppCompatActivity() {
     private val artistIdList = mutableListOf<String>()
     private val trackList = ArrayList<Track>()
     private lateinit var playlistAdapter: PlaylistRecyclerAdapter
@@ -30,7 +30,8 @@ class PlaylistPage : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_playlist)
         initRecyclerView()
-        processPlaylist()
+        val idList = intent.getStringArrayListExtra("idList") as ArrayList<String>
+        getRelated(idList)
         Thread.sleep(2000)
         initData()
         btn_export.setOnClickListener {
@@ -51,49 +52,7 @@ class PlaylistPage : AppCompatActivity() {
         println("Finishing")
     }
 
-    private fun processPlaylist() {
-
-        val accessToken = intent.getStringExtra("access_token")
-        // TODO: Move this access to the .NET API if we intend to use it from the website as well
-        getString(R.string.spotify_api_user_tracks)
-                .httpGet()
-                .header("Authorization" to "Bearer $accessToken")
-                .response { _, response, _ ->
-                    //print(response)
-                    val json = jsonDeserializer()
-                    val results = json.deserialize(response).obj()
-                    getFavorites(results)
-                }
-    }
-
-    private fun getFavorites(results: JSONObject){
-        val artistList = mutableListOf<String>()
-        val idList = mutableListOf<String>()
-        val jsonArray = results.getJSONArray("items")
-
-        for(i in 0 until jsonArray.length()){
-
-            val item = jsonArray[i] as JSONObject
-            val track = item["track"] as JSONObject
-            val artists = track.getJSONArray("artists")
-
-            for(j in 0 until artists.length()){
-                val artist = artists[j] as JSONObject
-                val name = artist.getString("name")
-                val id = artist.getString("id")
-                artistList.add(name)
-                idList.add(id)
-            }
-
-        }
-        val distinctArtistList = artistList.distinct() as MutableList<String>
-        distinctArtistList.shuffle()
-        val distinctIdList = idList.distinct() as MutableList<String>
-        distinctIdList.shuffle()
-        getRelated(distinctIdList)
-    }
-
-    private fun getRelated(idList : MutableList<String>){
+    private fun getRelated(idList : ArrayList<String>){
         val accessToken = intent.getStringExtra("access_token")
         for(id in idList){
             val searchString = "https://api.spotify.com/v1/artists/$id/related-artists"

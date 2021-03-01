@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#333131"
+    android:textAlignment="center"
     tools:context=".Timeline">
 
     <ImageButton
@@ -18,10 +19,9 @@
         android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.444"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.146"
         app:srcCompat="@drawable/bruce_mars_dbgwy7s3qy0_unsplash" />
 
     <TextView
@@ -40,17 +40,32 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
 
-    <TextView
-        android:id="@+id/user_playlists"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Recent Playlists"
-        android:textColor="#FFFFFF"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <Button
+        android:id="@+id/btn_search"
+        android:layout_width="113dp"
+        android:layout_height="41dp"
+        android:layout_marginBottom="64dp"
+        android:text="Search"
+        app:layout_constraintBottom_toTopOf="@+id/lbl_playlist"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/input_search"
+        android:layout_width="290dp"
+        android:layout_height="42dp"
+        android:backgroundTint="#7E7C7C"
+        android:ems="10"
+        android:hint="Search by artist . . ."
+        android:inputType="textPersonName"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/btn_search"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_playlist"
-        app:layout_constraintVertical_bias="0.189" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.827" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
