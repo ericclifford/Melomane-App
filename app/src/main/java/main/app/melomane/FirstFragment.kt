@@ -5,29 +5,20 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Base64.*
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import com.github.kittinunf.fuel.core.Response
 import com.github.kittinunf.fuel.httpGet
 import com.github.kittinunf.fuel.httpPost
 import com.github.kittinunf.fuel.json.jsonDeserializer
 import com.google.android.material.snackbar.Snackbar
-import main.app.melomane.auth.AuthToken
-import main.app.melomane.auth.Register
-import main.app.utils.with
 import com.spotify.sdk.android.auth.AuthorizationClient
 import com.spotify.sdk.android.auth.AuthorizationRequest
 import com.spotify.sdk.android.auth.AuthorizationResponse
-import com.spotify.sdk.android.authentication.AuthenticationClient
-import com.spotify.sdk.android.authentication.AuthenticationResponse
-import org.json.JSONException
-import org.json.JSONObject
-import kotlin.reflect.typeOf
+import main.app.melomane.auth.AuthToken
+import main.app.utils.with
 
 
 class FirstFragment : Fragment() {
@@ -65,12 +56,12 @@ class FirstFragment : Fragment() {
                 }
                 AuthorizationResponse.Type.ERROR -> {
                     val snacks = Snackbar.make(requireActivity().findViewById(R.id.activity_main),
-                        "Error: $response.error", Snackbar.LENGTH_SHORT)
+                            "Error: $response.error", Snackbar.LENGTH_SHORT)
                     snacks.show()
                 }
                 else -> {
                     val snacks = Snackbar.make(requireActivity().findViewById(R.id.activity_main),
-                        "Unexpected response type: $response.type", Snackbar.LENGTH_SHORT)
+                            "Unexpected response type: $response.type", Snackbar.LENGTH_SHORT)
                     snacks.show()
                 }
             }
@@ -83,11 +74,11 @@ class FirstFragment : Fragment() {
 
         val requestHeader = "$clientId:$clientSecret"
         val base64EncodedHeader = encodeToString(requestHeader.toByteArray(),
-                                          URL_SAFE with NO_PADDING with NO_WRAP)
+                URL_SAFE with NO_PADDING with NO_WRAP)
 
         val requestParams = listOf("grant_type" to "authorization_code",
-                                   "code" to accessCode,
-                                   "redirect_uri" to getString(R.string.redirect_uri))
+                "code" to accessCode,
+                "redirect_uri" to getString(R.string.redirect_uri))
 
         getString(R.string.spotify_auth_token_uri)
             .httpPost(requestParams)
@@ -98,7 +89,7 @@ class FirstFragment : Fragment() {
                     saveToken(result.component1()!!)
                 } else {
                     val snacks = Snackbar.make(requireActivity().findViewById(R.id.activity_main),
-                        "Something went wrong: $response.responseMessage", Snackbar.LENGTH_SHORT)
+                            "Something went wrong: $response.responseMessage", Snackbar.LENGTH_SHORT)
                     snacks.show()
                 }
             }
@@ -106,7 +97,7 @@ class FirstFragment : Fragment() {
 
     private fun saveToken(token: AuthToken) {
         val sharedPrefs = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
-        with (sharedPrefs.edit()) {
+        with(sharedPrefs.edit()) {
             putString("accessToken", token.access_token)
             putString("refreshToken", token.refresh_token)
             apply()
@@ -127,7 +118,7 @@ class FirstFragment : Fragment() {
             .header("Authorization" to "Bearer $accessToken")
             .response { _, response, _ ->
                 val snacks = Snackbar.make(requireActivity().findViewById(R.id.activity_main),
-                    "$response.responseMessage", Snackbar.LENGTH_SHORT)
+                        "$response.responseMessage", Snackbar.LENGTH_SHORT)
                 snacks.show()
                 print(response)
                 val json = jsonDeserializer()
@@ -148,9 +139,9 @@ class FirstFragment : Fragment() {
     private fun getAuthenticationRequest(): AuthorizationRequest {
         val clientId = getString(R.string.melomane_client_id)
         return AuthorizationRequest.Builder(clientId, AuthorizationResponse.Type.CODE, stringifyRedirectUri())
-            .setShowDialog(false)
+            .setShowDialog(true)
             .setState(getState())
-            .setScopes(arrayOf("playlist-modify-public", "user-library-read, user-top-read"))
+            .setScopes(arrayOf("playlist-modify-public", "user-library-read", "user-top-read"))
             .build()
     }
 

@@ -3,17 +3,12 @@ package main.app.melomane
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import androidx.core.view.isVisible
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.github.kittinunf.fuel.core.extensions.jsonBody
 import com.github.kittinunf.fuel.httpGet
-import com.github.kittinunf.fuel.httpPost
 import com.github.kittinunf.fuel.json.jsonDeserializer
 import kotlinx.android.synthetic.main.activity_artists.*
-import org.json.JSONArray
 import org.json.JSONObject
 
 class ArtistsPage : AppCompatActivity(){
@@ -24,7 +19,7 @@ class ArtistsPage : AppCompatActivity(){
         searchArtists()
         Thread.sleep(2000)
         fillContent()
-        btn_submit.setOnClickListener {
+        btn_artistPlaylist.setOnClickListener {
             getPlaylist()
         }
      }
@@ -48,7 +43,7 @@ class ArtistsPage : AppCompatActivity(){
 
     private fun fillContent() {
         if(artist != null){
-            txt_artist.text = artist.name
+            lbl_artistName.text = artist.name
             val requestOptions = RequestOptions()
                     .placeholder(R.drawable.ic_launcher_background)
                     .error(R.drawable.ic_launcher_background)
@@ -59,9 +54,9 @@ class ArtistsPage : AppCompatActivity(){
                     .into(img_artist)
         }
         else{
-            txt_artist.text = "Artist Not Found"
+            lbl_artistName.text = "Artist Not Found"
             img_artist.isVisible = false
-            btn_submit.isVisible = false
+            btn_artistPlaylist.isVisible = false
         }
     }
 

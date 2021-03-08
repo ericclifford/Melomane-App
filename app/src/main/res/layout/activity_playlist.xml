@@ -20,8 +20,8 @@
 
     <Button
         android:id="@+id/btn_export"
-        android:layout_width="250dp"
-        android:layout_height="60dp"
+        android:layout_width="282dp"
+        android:layout_height="80dp"
         android:text="Export to Spotify"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/rec_view"
@@ -30,4 +30,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.688" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

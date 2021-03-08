@@ -194,6 +194,23 @@ class PlaylistPage() : AppCompatActivity() {
                 .response { _, response, _ ->
                     println("Response")
                     println(response)
+
+                    btn_export.text = "Playlist Exported!! Go to Home Screen"
+                    btn_export.setOnClickListener {
+                        goHome()
+                    }
                 }
+    }
+
+    private fun goHome() {
+        val id = intent.getStringExtra("id")
+        val name = intent.getStringExtra("name")
+        val accessToken = intent.getStringExtra("access_token")
+        val intent = Intent(this, Timeline::class.java).apply{
+            putExtra("id", id)
+            putExtra("name", name)
+            putExtra("access_token", accessToken)
+        }
+        startActivity(intent)
     }
 }
