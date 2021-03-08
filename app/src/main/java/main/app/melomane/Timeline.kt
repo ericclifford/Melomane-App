@@ -91,6 +91,7 @@ class Timeline : AppCompatActivity() {
             putExtra("id", id)
             putExtra("name", name)
             putExtra("access_token", accessToken)
+            putExtra("artistName", "liked artists")
             putStringArrayListExtra("idList", finalIdList)
         }
         startActivity(intent)

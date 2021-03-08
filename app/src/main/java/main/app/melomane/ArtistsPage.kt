@@ -35,6 +35,7 @@ class ArtistsPage : AppCompatActivity(){
                 putExtra("id", id)
                 putExtra("name", name)
                 putExtra("access_token", accessToken)
+                putExtra("artistName", artist.name)
                 putStringArrayListExtra("idList", idList)
             }
             startActivity(intent)
