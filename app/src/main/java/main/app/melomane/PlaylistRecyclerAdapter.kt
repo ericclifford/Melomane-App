@@ -8,7 +8,6 @@ import com.bumptech.glide.request.RequestOptions
 import main.app.melomane.databinding.LayoutPlaylistItemBinding
 
 class PlaylistRecyclerAdapter : RecyclerView.Adapter<PlaylistRecyclerAdapter.PlaylistViewHolder>() {
-
     private var items: List<Track> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistViewHolder {
@@ -30,7 +29,6 @@ class PlaylistRecyclerAdapter : RecyclerView.Adapter<PlaylistRecyclerAdapter.Pla
     }
 
     class PlaylistViewHolder (private val itemBinding: LayoutPlaylistItemBinding): RecyclerView.ViewHolder(itemBinding.root) {
-
         fun bind(track: Track){
             itemBinding.textArtist.text = track.artist
             itemBinding.textSong.text = track.name

@@ -3,6 +3,7 @@ package main.app.melomane
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.github.kittinunf.fuel.httpGet
@@ -10,9 +11,11 @@ import com.github.kittinunf.fuel.json.jsonDeserializer
 import main.app.melomane.databinding.ActivityArtistsBinding
 import org.json.JSONObject
 
-class ArtistsPage : AppCompatActivity(){
-    private lateinit var artist: Artist
+class ArtistsPage : AppCompatActivity() {
+    private val artists = ArrayList<Artist>()
+
     private lateinit var binding: ActivityArtistsBinding
+    private lateinit var artistsAdapter: ArtistRecyclerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,40 +23,24 @@ class ArtistsPage : AppCompatActivity(){
         val view = binding.root
         setContentView(view)
 
+        initRecyclerView()
+
         searchArtists()
         Thread.sleep(2000)
-        fillContent()
-        binding.btnArtistPlaylist.setOnClickListener {
-            getPlaylist()
-        }
+
+        initData()
      }
 
-    private fun getPlaylist() {
-        val idList = ArrayList<String>()
-        val accessToken = intent.getStringExtra("access_token")
-        idList.add(artist.id)
-        val id = intent.getStringExtra("id")
-        val name = intent.getStringExtra("name")
-        val intent = Intent(this, PlaylistPage::class.java).apply {
-            putExtra("id", id)
-            putExtra("name", name)
-            putExtra("access_token", accessToken)
-            putExtra("artistName", artist.name)
-            putStringArrayListExtra("idList", idList)
+    private fun initRecyclerView() {
+        binding.recyclerViewArtist.apply {
+            layoutManager = LinearLayoutManager(this@ArtistsPage)
+            artistsAdapter = ArtistRecyclerAdapter(intent)
+            adapter = artistsAdapter
         }
-        startActivity(intent)
     }
 
-    private fun fillContent() {
-        binding.lblArtistName.text = artist.name
-        val requestOptions = RequestOptions()
-                .placeholder(R.drawable.ic_launcher_background)
-                .error(R.drawable.ic_launcher_background)
-
-        Glide.with(this)
-                .applyDefaultRequestOptions(requestOptions)
-                .load(artist.image)
-                .into(binding.imgArtist)
+    private fun initData() {
+        artistsAdapter.submitList(artists)
     }
 
     private fun searchArtists() {
@@ -62,19 +49,23 @@ class ArtistsPage : AppCompatActivity(){
 
         searchString?.httpGet()?.header("Authorization" to "Bearer $accessToken")
             ?.response { _, response, _ ->
-                println("Response")
-                println(response)
+                println("THIS SHOULD PRINT ONCE")
                 val json = jsonDeserializer()
-                val results = json.deserialize(response).obj()
-                val artists = results.getJSONObject("artists")
-                val artistArray = artists.getJSONArray("items")
-                val item = artistArray[0] as JSONObject
-                val id = item.getString("id")
-                val imgArray = item.getJSONArray("images")
-                val imgItem = imgArray[0] as JSONObject
-                val img = imgItem.getString("url")
-                val name = item.getString("name")
-                artist = Artist(id, name, img)
+                val results = json.deserialize(response).obj().getJSONObject("artists")
+                val artistArray = results.getJSONArray("items")
+                for (i in 0 until artistArray.length()) {
+                    val item = artistArray.getJSONObject(i)
+
+                    val id = item.getString("id")
+                    val name = item.getString("name")
+                    val followers = item.getJSONObject("followers").getInt("total")
+
+                    val imgArray = item.getJSONArray("images")
+                    val imgItem = imgArray[0] as JSONObject
+                    val img = imgItem.getString("url")
+
+                    artists.add(Artist(id, name, img, followers))
+                }
             }
     }
 }
