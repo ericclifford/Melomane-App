@@ -126,11 +126,12 @@ class FirstFragment : Fragment() {
                 val name = results.getString("display_name")
                 val id = results.getString("id")
                 val uri = results.getString("uri")
-                val intent = Intent(activity, Timeline::class.java)
-                intent.putExtra("name", name)
-                intent.putExtra("id", id)
-                intent.putExtra("uri", uri)
-                intent.putExtra("access_token", accessToken)
+                val intent = Intent(activity, Timeline::class.java).apply {
+                    putExtra("name", name)
+                    putExtra("id", id)
+                    putExtra("uri", uri)
+                    putExtra("access_token", accessToken)
+                }
                 activity?.startActivity(intent)
             }
 
