@@ -3,11 +3,15 @@ package main.app.melomane
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.github.kittinunf.fuel.core.Response
+import com.github.kittinunf.fuel.core.isClientError
 import com.github.kittinunf.fuel.httpGet
 import com.github.kittinunf.fuel.json.jsonDeserializer
+import com.spotify.sdk.android.auth.AuthorizationResponse
 import main.app.melomane.databinding.ActivityArtistsBinding
 import org.json.JSONObject
 
@@ -49,10 +53,20 @@ class ArtistsPage : AppCompatActivity() {
 
         searchString?.httpGet()?.header("Authorization" to "Bearer $accessToken")
             ?.response { _, response, _ ->
-                println("THIS SHOULD PRINT ONCE")
+                if(response.statusCode == 400) {
+                    binding.txtNoArtists.visibility = View.VISIBLE
+                    binding.recyclerViewArtist.visibility = View.INVISIBLE
+                }
+                println(response)
                 val json = jsonDeserializer()
                 val results = json.deserialize(response).obj().getJSONObject("artists")
                 val artistArray = results.getJSONArray("items")
+
+                if(artistArray.length() == 0){
+                    binding.txtNoArtists.visibility = View.VISIBLE
+                    binding.recyclerViewArtist.visibility = View.INVISIBLE
+                }
+
                 for (i in 0 until artistArray.length()) {
                     val item = artistArray.getJSONObject(i)
 
