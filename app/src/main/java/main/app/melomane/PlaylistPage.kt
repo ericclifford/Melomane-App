@@ -28,8 +28,19 @@ class PlaylistPage : AppCompatActivity() {
         setContentView(view)
 
         initRecyclerView()
-        val idList = intent.getStringArrayListExtra("idList") as ArrayList<String>
-        getRelated(idList)
+
+        val idList: ArrayList<String> = intent.getStringArrayListExtra("idList") ?: ArrayList()
+        if (idList.size > 0) {
+            getRelated(idList)
+        }
+        else {
+            val artistId = intent.getStringExtra("artistId")
+            if (artistId != null) {
+                idList.add(artistId)
+                getRelated(idList)
+            }
+        }
+
         Thread.sleep(2000)
         initData()
         binding.btnExport.setOnClickListener {
@@ -67,7 +78,6 @@ class PlaylistPage : AppCompatActivity() {
         val distinctIdList = artistIdList.distinct() as MutableList<String>
         distinctIdList.shuffle()
         getTracks(distinctIdList)
-
     }
 
     private fun processRelated(results: JSONObject){

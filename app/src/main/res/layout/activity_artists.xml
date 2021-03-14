@@ -7,40 +7,29 @@
     android:background="#333131"
     tools:context=".PlaylistPage">
 
-    <TextView
-        android:id="@+id/lbl_artistName"
-        android:layout_width="381dp"
-        android:layout_height="99dp"
-        android:layout_marginTop="32dp"
-        android:text="Artist Name"
-        android:textAlignment="center"
-        android:textColor="#FFFFFF"
-        android:textSize="30sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/img_artist" />
-
-    <ImageView
-        android:id="@+id/img_artist"
-        android:layout_width="182dp"
-        android:layout_height="187dp"
-        android:layout_marginTop="64dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
-
-    <Button
-        android:id="@+id/btn_artistPlaylist"
-        android:layout_width="294dp"
-        android:layout_height="81dp"
-        android:text="Generate Related Playlist"
-        android:textSize="18sp"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_artist"
+        android:layout_width="409dp"
+        android:layout_height="581dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lbl_artistName"
-        app:layout_constraintVertical_bias="0.257" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/txt_noArtists"
+        android:layout_width="319dp"
+        android:layout_height="93dp"
+        android:text="No artists found!! Try again."
+        android:textAlignment="center"
+        android:textColor="#FFFEFE"
+        android:textSize="36sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.499" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
