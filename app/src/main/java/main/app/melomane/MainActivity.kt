@@ -6,21 +6,22 @@ import android.provider.Settings
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
-import main.app.melomane.R
 import main.app.logging.DeviceDetails
 import main.app.logging.TimberRemoteTree
-import main.app.melomane.BuildConfig
+import main.app.melomane.databinding.ActivityMainBinding
 import timber.log.Timber
 
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var binding : ActivityMainBinding
+
     @SuppressLint("HardwareIds")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate((layoutInflater))
+        val view = binding.root
+        setContentView(view)
 
         if (BuildConfig.DEBUG) {
             val deviceId = Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)

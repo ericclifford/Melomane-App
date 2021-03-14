@@ -1,30 +1,24 @@
 package main.app.melomane
 
-import android.view.View
 import android.view.ViewGroup
-import android.util.Log
 import android.view.LayoutInflater
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import kotlinx.android.synthetic.main.layout_playlist_item.view.*
+import main.app.melomane.databinding.LayoutPlaylistItemBinding
 
-class PlaylistRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class PlaylistRecyclerAdapter : RecyclerView.Adapter<PlaylistRecyclerAdapter.PlaylistViewHolder>() {
 
     private var items: List<Track> = ArrayList()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return PlaylistViewHolder(
-                LayoutInflater.from(parent.context).inflate(R.layout.layout_playlist_item, parent, false)
-        )
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistViewHolder {
+        val itemBinding = LayoutPlaylistItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return PlaylistViewHolder(itemBinding)
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when(holder){
-            is PlaylistViewHolder ->{
-                holder.bind(items.get(position))
-            }
-        }
+    override fun onBindViewHolder(holder: PlaylistViewHolder, position: Int) {
+        val playlistBean = items[position]
+        holder.bind(playlistBean)
     }
 
     fun submitList(playlist: List<Track>){
@@ -35,16 +29,11 @@ class PlaylistRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
         return items.size
     }
 
-    class PlaylistViewHolder constructor(
-            itemView: View
-    ): RecyclerView.ViewHolder(itemView){
-        val name = itemView.text_song
-        val artist = itemView.text_artist
-        val image = itemView.img_album
+    class PlaylistViewHolder (private val itemBinding: LayoutPlaylistItemBinding): RecyclerView.ViewHolder(itemBinding.root) {
 
         fun bind(track: Track){
-            name.setText(track.name)
-            artist.setText(track.artist)
+            itemBinding.textArtist.text = track.artist
+            itemBinding.textSong.text = track.name
 
             val requestOptions = RequestOptions()
                     .placeholder(R.drawable.ic_launcher_background)
@@ -53,7 +42,7 @@ class PlaylistRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
             Glide.with(itemView.context)
                 .applyDefaultRequestOptions(requestOptions)
                 .load(track.image)
-                .into(image)
+                .into(itemBinding.imgAlbum)
         }
     }
 }

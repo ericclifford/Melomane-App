@@ -5,42 +5,41 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.view.Menu
-import android.view.MenuItem
-import android.widget.TextView
-import android.widget.Toast
-import com.github.kittinunf.fuel.core.extensions.jsonBody
 import com.github.kittinunf.fuel.httpGet
 import com.github.kittinunf.fuel.json.jsonDeserializer
-import kotlinx.android.synthetic.main.activity_timeline.*
+import main.app.melomane.databinding.ActivityTimelineBinding
 import org.json.JSONObject
 
 class Timeline : AppCompatActivity() {
 
+    private lateinit var binding: ActivityTimelineBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_timeline)
-        val name = intent.getStringExtra("name")
+        binding = ActivityTimelineBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
+
         findViewById<View>(R.id.btn_playlist).setOnClickListener {
             processPlaylist()
         }
 
-        input_search.setOnFocusChangeListener { v, hasFocus ->
-            input_search.hint = ""
+        binding.inputSearch.setOnFocusChangeListener { _, _ ->
+            binding.inputSearch.hint = ""
         }
 
-        btn_search.setOnClickListener {
+        binding.btnSearch.setOnClickListener {
             searchArtists()
         }
-
     }
 
     private fun searchArtists() {
-        val input = input_search.text.toString()
+        val input = binding.inputSearch.text.toString()
         val searchString = input.replace(" ", "%20")
         val id = intent.getStringExtra("id")
         val name = intent.getStringExtra("name")
         val accessToken = intent.getStringExtra("access_token")
-        val apiString = "https://api.spotify.com/v1/search?q=$searchString&type=artist"
+        val apiString = getString(R.string.spotify_api_artist_search, searchString)
         val intent = Intent(this, ArtistsPage::class.java).apply{
             putExtra("id", id)
             putExtra("name", name)
@@ -100,11 +99,5 @@ class Timeline : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
         return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val id = item.itemId
-
-        return super.onOptionsItemSelected(item)
     }
 }

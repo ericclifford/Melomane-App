@@ -1,7 +1,6 @@
 package main.app.melomane
 
 import android.app.Application
-import android.content.Intent
 
 class App : Application() {
     companion object {

@@ -10,8 +10,8 @@ data class Track(
         val image: String,
         val uri: String
 ) {
-    public override fun toString(): String {
-        val string = name + " - " + artist
+    override fun toString(): String {
+        val string = "$name - $artist"
         return(string)
     }
 }
