@@ -57,7 +57,7 @@ class ArtistsPage : AppCompatActivity() {
                     binding.txtNoArtists.visibility = View.VISIBLE
                     binding.recyclerViewArtist.visibility = View.INVISIBLE
                 }
-                println(response)
+                println("THIS SHOULD PRINT ONCE")
                 val json = jsonDeserializer()
                 val results = json.deserialize(response).obj().getJSONObject("artists")
                 val artistArray = results.getJSONArray("items")
