@@ -3,7 +3,6 @@ package main.app.melomane
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Menu
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.kittinunf.fuel.core.extensions.jsonBody
@@ -29,16 +28,13 @@ class PlaylistPage : AppCompatActivity() {
 
         initRecyclerView()
 
-        val idList: ArrayList<String> = intent.getStringArrayListExtra("idList") ?: ArrayList()
-        if (idList.size > 0) {
+        val idList = intent.getStringArrayListExtra("idList")
+        if (idList != null) {
             getRelated(idList)
         }
         else {
             val artistId = intent.getStringExtra("artistId")
-            if (artistId != null) {
-                idList.add(artistId)
-                getRelated(idList)
-            }
+            scoreRelatedArtists(artistId!!)
         }
 
         Thread.sleep(2000)
@@ -59,6 +55,34 @@ class PlaylistPage : AppCompatActivity() {
     private fun initData(){
         playlistAdapter.submitList(trackList)
         println("Finishing")
+    }
+
+    private fun scoreRelatedArtists(artistId: String) {
+        val accessToken = intent.getStringExtra("access_token")
+        // TODO: This should probably be a SortedList, but lord is it a weird interface.
+        val scoredArtists = HashMap<Double, String>()
+
+        for (i in 0 until 5) {
+            val key = scoredArtists.keys.firstOrNull()
+            val initialArtistId: String? = if (key == null) artistId else scoredArtists[key]
+            getString(R.string.spotify_api_related_artists, initialArtistId)
+                    .httpGet()
+                    .header("Authorization" to "Bearer $accessToken")
+                    .response { _, response, _ ->
+                        val artists = jsonDeserializer().deserialize(response).obj()
+                                .getJSONArray("artists")
+
+                        for (j in 0 until artists.length()) {
+                            val artist = artists[j] as JSONObject
+                            val followers = artist.getJSONObject("followers").getInt("total")
+                            val popularity = artist.getDouble("popularity")
+                            val score = followers / popularity
+                            scoredArtists[score] = artist.getString("id")
+                        }
+                    }
+        }
+        Thread.sleep(500)
+        getTracks(scoredArtists.values.take(20).toMutableList())
     }
 
     private fun getRelated(idList : ArrayList<String>){
