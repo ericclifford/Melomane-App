@@ -29,12 +29,17 @@ class PlaylistPage : AppCompatActivity() {
         initRecyclerView()
 
         val idList = intent.getStringArrayListExtra("idList")
+        println("ID LIST: " + idList.toString())
         if (idList != null) {
-            getRelated(idList)
+            scoreRelatedArtists(idList)
         }
         else {
             val artistId = intent.getStringExtra("artistId")
-            scoreRelatedArtists(artistId!!)
+            if (artistId != null) {
+                val newIdList = ArrayList<String>()
+                newIdList.add(artistId)
+                scoreRelatedArtists(newIdList)
+            }
         }
 
         Thread.sleep(2000)
@@ -57,62 +62,43 @@ class PlaylistPage : AppCompatActivity() {
         println("Finishing")
     }
 
-    private fun scoreRelatedArtists(artistId: String) {
+    private fun scoreRelatedArtists(idList: ArrayList<String>) {
         val accessToken = intent.getStringExtra("access_token")
-        // TODO: This should probably be a SortedList, but lord is it a weird interface.
-        val scoredArtists = HashMap<Double, String>()
+        for(id in idList) {
 
-        for (i in 0 until 5) {
-            val key = scoredArtists.keys.firstOrNull()
-            val initialArtistId: String? = if (key == null) artistId else scoredArtists[key]
-            getString(R.string.spotify_api_related_artists, initialArtistId)
-                    .httpGet()
-                    .header("Authorization" to "Bearer $accessToken")
-                    .response { _, response, _ ->
-                        val artists = jsonDeserializer().deserialize(response).obj()
-                                .getJSONArray("artists")
+            // TODO: This should probably be a SortedList, but lord is it a weird interface.
+            val scoredArtists = HashMap<Double, String>()
 
-                        for (j in 0 until artists.length()) {
-                            val artist = artists[j] as JSONObject
-                            val followers = artist.getJSONObject("followers").getInt("total")
-                            val popularity = artist.getDouble("popularity")
-                            val score = followers / popularity
-                            scoredArtists[score] = artist.getString("id")
+            for (i in 0 until 5) {
+                val key = scoredArtists.keys.firstOrNull()
+                val initialArtistId: String? = if (key == null) id else scoredArtists[key]
+                getString(R.string.spotify_api_related_artists, initialArtistId)
+                        .httpGet()
+                        .header("Authorization" to "Bearer $accessToken")
+                        .response { _, response, _ ->
+                            val artists = jsonDeserializer().deserialize(response).obj()
+                                    .getJSONArray("artists")
+
+                            for (j in 0 until artists.length()) {
+                                val artist = artists[j] as JSONObject
+                                val followers = artist.getJSONObject("followers").getInt("total")
+                                val popularity = artist.getDouble("popularity")
+                                val score = followers / popularity
+                                scoredArtists[score] = artist.getString("id")
+                            }
                         }
-                    }
-        }
-        Thread.sleep(500)
-        getTracks(scoredArtists.values.take(20).toMutableList())
-    }
-
-    private fun getRelated(idList : ArrayList<String>){
-        val accessToken = intent.getStringExtra("access_token")
-        for(id in idList){
-            val searchString = getString(R.string.spotify_api_related_artists, id)
-            searchString.httpGet()
-                    .header("Authorization" to "Bearer $accessToken")
-                    .response { _, response, _ ->
-                        //print(response)
-                        val json = jsonDeserializer()
-                        val results = json.deserialize(response).obj()
-                        processRelated(results)
-                    }
+            }
+            Thread.sleep(300)
+            println(scoredArtists.toString())
+            val values = scoredArtists.values.take(20).toMutableList()
+            for(id in values){
+                artistIdList.add(id)
+            }
         }
         Thread.sleep(500)
         val distinctIdList = artistIdList.distinct() as MutableList<String>
         distinctIdList.shuffle()
         getTracks(distinctIdList)
-    }
-
-    private fun processRelated(results: JSONObject){
-
-        val jsonArray = results.getJSONArray("artists")
-
-        for(i in 0 until jsonArray.length()){
-            val artist = jsonArray[i] as JSONObject
-            val artistId = artist.getString("id")
-            artistIdList.add(artistId)
-        }
     }
 
     private fun getTracks(idList: MutableList<String>){
@@ -138,10 +124,11 @@ class PlaylistPage : AppCompatActivity() {
         }
         Thread.sleep(500)
         trackList.shuffle()
-        for(track in trackList){
-            println(track.toString())
-        }
+ //       for(track in trackList){
+ //           println(track.toString())
+ //       }
     }
+
     private fun processTracks(results: JSONObject){
 
         val jsonArray = results.getJSONArray("tracks")
@@ -170,6 +157,7 @@ class PlaylistPage : AppCompatActivity() {
             val newTrack = Track(trackId, name, artistNames, imageUrl, trackUri)
             tracks.add(newTrack)
         }
+        tracks.shuffle()
         for (i in 0 until 3){
             trackList.add(tracks[i])
         }
