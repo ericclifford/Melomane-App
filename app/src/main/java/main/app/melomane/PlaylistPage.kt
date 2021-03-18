@@ -12,10 +12,16 @@ import com.github.kittinunf.fuel.json.jsonDeserializer
 import main.app.melomane.databinding.ActivityPlaylistBinding
 import org.json.JSONArray
 import org.json.JSONObject
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 class PlaylistPage : AppCompatActivity() {
     private val artistIdList = mutableListOf<String>()
     private val trackList = ArrayList<Track>()
+
+    // TODO: This should probably be a SortedList, but lord is it a weird interface.
+    val scoredArtists = HashMap<Double, String>()
 
     private lateinit var binding: ActivityPlaylistBinding
     private lateinit var playlistAdapter: PlaylistRecyclerAdapter
@@ -29,20 +35,19 @@ class PlaylistPage : AppCompatActivity() {
         initRecyclerView()
 
         val idList = intent.getStringArrayListExtra("idList")
-        println("ID LIST: " + idList.toString())
         if (idList != null) {
-            scoreRelatedArtists(idList)
+            getRelatedArtists(idList)
         }
         else {
             val artistId = intent.getStringExtra("artistId")
             if (artistId != null) {
                 val newIdList = ArrayList<String>()
                 newIdList.add(artistId)
-                scoreRelatedArtists(newIdList)
+                getRelatedArtists(newIdList)
             }
         }
 
-        Thread.sleep(2000)
+        Thread.sleep(1500)
         initData()
         binding.btnExport.setOnClickListener {
             createPlaylist()
@@ -62,55 +67,63 @@ class PlaylistPage : AppCompatActivity() {
         println("Finishing")
     }
 
-    private fun scoreRelatedArtists(idList: ArrayList<String>) {
-        val accessToken = intent.getStringExtra("access_token")
-
+    private fun getRelatedArtists(idList: ArrayList<String>) {
         var newIdList = idList.distinct() as MutableList<String>
         newIdList.shuffle()
-        if(newIdList.size >5){
-            newIdList = newIdList.subList(0,4)
+
+        if(newIdList.size > 5){
+            newIdList = newIdList.subList(0,5)
         }
+
         for(id in newIdList) {
-
-            // TODO: This should probably be a SortedList, but lord is it a weird interface.
-            val scoredArtists = HashMap<Double, String>()
-
-            for (i in 0 until 5) {
-                val key = scoredArtists.keys.firstOrNull()
-                val initialArtistId: String? = if (key == null) id else scoredArtists[key]
-                getString(R.string.spotify_api_related_artists, initialArtistId)
-                        .httpGet()
-                        .header("Authorization" to "Bearer $accessToken")
-                        .response { _, response, _ ->
-                            val artists = jsonDeserializer().deserialize(response).obj()
-                                    .getJSONArray("artists")
-
-                            for (j in 0 until artists.length()) {
-                                val artist = artists[j] as JSONObject
-                                val followers = artist.getJSONObject("followers").getInt("total")
-                                val popularity = artist.getDouble("popularity")
-                                val score = followers / popularity
-                                scoredArtists[score] = artist.getString("id")
-                            }
-                        }
-            }
-            Thread.sleep(300)
-            println(scoredArtists.toString())
-            val values = scoredArtists.toSortedMap().values.take(20).toMutableList()
-            for(id in values){
-                artistIdList.add(id)
-            }
+            processRelated(id)
+            scoredArtists.clear()
         }
-        Thread.sleep(500)
+
+        Thread.sleep(400)
         val distinctIdList = artistIdList.distinct() as MutableList<String>
         distinctIdList.shuffle()
         getTracks(distinctIdList)
     }
 
+    private fun processRelated(id: String) {
+        val accessToken = intent.getStringExtra("access_token")
+
+        for (i in 0 until 5) {
+            val sortedScores = scoredArtists.toSortedMap()
+            val key = sortedScores.keys.firstOrNull()
+            println(key)
+            val initialArtistId: String? = if (key == null) id else sortedScores[key]
+            getString(R.string.spotify_api_related_artists, initialArtistId)
+                    .httpGet()
+                    .header("Authorization" to "Bearer $accessToken")
+                    .response { _, response, _ ->
+                        val artists = jsonDeserializer().deserialize(response).obj()
+                                .getJSONArray("artists")
+
+                        for (j in 0 until artists.length()) {
+                            val artist = artists[j] as JSONObject
+                            val followers = artist.getJSONObject("followers").getInt("total")
+                            val popularity = artist.getDouble("popularity")
+                            val score = followers / popularity
+                            scoredArtists[score] = artist.getString("id")
+                        }
+                    }
+            Thread.sleep(100)
+        }
+        val values = scoredArtists.toSortedMap().values.take(10).toMutableList()
+        for(id in values){
+            artistIdList.add(id)
+        }
+    }
+
     private fun getTracks(idList: MutableList<String>){
         val accessToken = intent.getStringExtra("access_token")
         if(idList.isNotEmpty()){
-            val ids = idList.subList(0,10)
+            var ids = idList
+            if(ids.size > 10){
+                ids = idList.subList(0,9)
+            }
             for(id in ids){
                 val searchString = getString(R.string.spotify_api_top_tracks, id)
                 searchString.httpGet()
