@@ -29,7 +29,7 @@ class PlaylistPage : AppCompatActivity() {
         initRecyclerView()
 
         val idList = intent.getStringArrayListExtra("idList")
-        println("ID LIST: " + idList.toString())
+
         if (idList != null) {
             scoreRelatedArtists(idList)
         }
@@ -84,15 +84,20 @@ class PlaylistPage : AppCompatActivity() {
                                 val followers = artist.getJSONObject("followers").getInt("total")
                                 val popularity = artist.getDouble("popularity")
                                 val score = followers / popularity
-                                scoredArtists[score] = artist.getString("id")
+                                if (!scoredArtists.containsKey(score)) {
+                                    scoredArtists[score] = artist.getString("id")
+                                }
                             }
                         }
             }
             Thread.sleep(300)
-            println(scoredArtists.toString())
-            val values = scoredArtists.toSortedMap().values.take(20).toMutableList()
-            for(id in values){
-                artistIdList.add(id)
+            val sortedStuff = scoredArtists.toSortedMap()
+            for (thing in sortedStuff) {
+                println(thing.value)
+            }
+            val values = scoredArtists.toSortedMap().values.take(10).toMutableList()
+            for(artistId in values){
+                artistIdList.add(artistId)
             }
         }
         Thread.sleep(500)
@@ -104,8 +109,7 @@ class PlaylistPage : AppCompatActivity() {
     private fun getTracks(idList: MutableList<String>){
         val accessToken = intent.getStringExtra("access_token")
         if(idList.isNotEmpty()){
-            val ids = idList.subList(0,10)
-            for(id in ids){
+            for(id in idList){
                 val searchString = getString(R.string.spotify_api_top_tracks, id)
                 searchString.httpGet()
                         .header("Authorization" to "Bearer $accessToken")
@@ -124,9 +128,6 @@ class PlaylistPage : AppCompatActivity() {
         }
         Thread.sleep(500)
         trackList.shuffle()
- //       for(track in trackList){
- //           println(track.toString())
- //       }
     }
 
     private fun processTracks(results: JSONObject){
@@ -162,11 +163,6 @@ class PlaylistPage : AppCompatActivity() {
             trackList.add(tracks[i])
         }
     }
-
-//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-//        menuInflater.inflate(R.menu.menu_main, menu)
-//        return true
-//    }
 
     private fun createPlaylist() {
         println("Exporting")
