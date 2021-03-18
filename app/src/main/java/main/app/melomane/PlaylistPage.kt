@@ -3,7 +3,6 @@ package main.app.melomane
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Menu
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.kittinunf.fuel.core.extensions.jsonBody
@@ -13,10 +12,16 @@ import com.github.kittinunf.fuel.json.jsonDeserializer
 import main.app.melomane.databinding.ActivityPlaylistBinding
 import org.json.JSONArray
 import org.json.JSONObject
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 class PlaylistPage : AppCompatActivity() {
     private val artistIdList = mutableListOf<String>()
     private val trackList = ArrayList<Track>()
+
+    // TODO: This should probably be a SortedList, but lord is it a weird interface.
+    val scoredArtists = HashMap<Double, String>()
 
     private lateinit var binding: ActivityPlaylistBinding
     private lateinit var playlistAdapter: PlaylistRecyclerAdapter
@@ -29,19 +34,20 @@ class PlaylistPage : AppCompatActivity() {
 
         initRecyclerView()
 
-        val idList: ArrayList<String> = intent.getStringArrayListExtra("idList") ?: ArrayList()
-        if (idList.size > 0) {
-            getRelated(idList)
+        val idList = intent.getStringArrayListExtra("idList")
+        if (idList != null) {
+            getRelatedArtists(idList)
         }
         else {
             val artistId = intent.getStringExtra("artistId")
             if (artistId != null) {
-                idList.add(artistId)
-                getRelated(idList)
+                val newIdList = ArrayList<String>()
+                newIdList.add(artistId)
+                getRelatedArtists(newIdList)
             }
         }
 
-        Thread.sleep(2000)
+        Thread.sleep(1500)
         initData()
         binding.btnExport.setOnClickListener {
             createPlaylist()
@@ -61,40 +67,63 @@ class PlaylistPage : AppCompatActivity() {
         println("Finishing")
     }
 
-    private fun getRelated(idList : ArrayList<String>){
-        val accessToken = intent.getStringExtra("access_token")
-        for(id in idList){
-            val searchString = getString(R.string.spotify_api_related_artists, id)
-            searchString.httpGet()
-                    .header("Authorization" to "Bearer $accessToken")
-                    .response { _, response, _ ->
-                        //print(response)
-                        val json = jsonDeserializer()
-                        val results = json.deserialize(response).obj()
-                        processRelated(results)
-                    }
+    private fun getRelatedArtists(idList: ArrayList<String>) {
+        var newIdList = idList.distinct() as MutableList<String>
+        newIdList.shuffle()
+
+        if(newIdList.size > 5){
+            newIdList = newIdList.subList(0,5)
         }
-        Thread.sleep(500)
+
+        for(id in newIdList) {
+            processRelated(id)
+            scoredArtists.clear()
+        }
+
+        Thread.sleep(400)
         val distinctIdList = artistIdList.distinct() as MutableList<String>
         distinctIdList.shuffle()
         getTracks(distinctIdList)
     }
 
-    private fun processRelated(results: JSONObject){
+    private fun processRelated(id: String) {
+        val accessToken = intent.getStringExtra("access_token")
 
-        val jsonArray = results.getJSONArray("artists")
+        for (i in 0 until 5) {
+            val sortedScores = scoredArtists.toSortedMap()
+            val key = sortedScores.keys.firstOrNull()
+            println(key)
+            val initialArtistId: String? = if (key == null) id else sortedScores[key]
+            getString(R.string.spotify_api_related_artists, initialArtistId)
+                    .httpGet()
+                    .header("Authorization" to "Bearer $accessToken")
+                    .response { _, response, _ ->
+                        val artists = jsonDeserializer().deserialize(response).obj()
+                                .getJSONArray("artists")
 
-        for(i in 0 until jsonArray.length()){
-            val artist = jsonArray[i] as JSONObject
-            val artistId = artist.getString("id")
-            artistIdList.add(artistId)
+                        for (j in 0 until artists.length()) {
+                            val artist = artists[j] as JSONObject
+                            val followers = artist.getJSONObject("followers").getInt("total")
+                            val popularity = artist.getDouble("popularity")
+                            val score = followers / popularity
+                            scoredArtists[score] = artist.getString("id")
+                        }
+                    }
+            Thread.sleep(100)
+        }
+        val values = scoredArtists.toSortedMap().values.take(10).toMutableList()
+        for(id in values){
+            artistIdList.add(id)
         }
     }
 
     private fun getTracks(idList: MutableList<String>){
         val accessToken = intent.getStringExtra("access_token")
         if(idList.isNotEmpty()){
-            val ids = idList.subList(0,10)
+            var ids = idList
+            if(ids.size > 10){
+                ids = idList.subList(0,9)
+            }
             for(id in ids){
                 val searchString = getString(R.string.spotify_api_top_tracks, id)
                 searchString.httpGet()
@@ -114,10 +143,11 @@ class PlaylistPage : AppCompatActivity() {
         }
         Thread.sleep(500)
         trackList.shuffle()
-        for(track in trackList){
-            println(track.toString())
-        }
+ //       for(track in trackList){
+ //           println(track.toString())
+ //       }
     }
+
     private fun processTracks(results: JSONObject){
 
         val jsonArray = results.getJSONArray("tracks")
@@ -146,6 +176,7 @@ class PlaylistPage : AppCompatActivity() {
             val newTrack = Track(trackId, name, artistNames, imageUrl, trackUri)
             tracks.add(newTrack)
         }
+        tracks.shuffle()
         for (i in 0 until 3){
             trackList.add(tracks[i])
         }
