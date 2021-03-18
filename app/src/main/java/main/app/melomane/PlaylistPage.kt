@@ -90,7 +90,7 @@ class PlaylistPage : AppCompatActivity() {
             }
             Thread.sleep(300)
             println(scoredArtists.toString())
-            val values = scoredArtists.values.take(20).toMutableList()
+            val values = scoredArtists.toSortedMap().values.take(20).toMutableList()
             for(id in values){
                 artistIdList.add(id)
             }
