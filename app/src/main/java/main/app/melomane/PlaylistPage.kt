@@ -64,7 +64,13 @@ class PlaylistPage : AppCompatActivity() {
 
     private fun scoreRelatedArtists(idList: ArrayList<String>) {
         val accessToken = intent.getStringExtra("access_token")
-        for(id in idList) {
+
+        var newIdList = idList.distinct() as MutableList<String>
+        newIdList.shuffle()
+        if(newIdList.size >5){
+            newIdList = newIdList.subList(0,4)
+        }
+        for(id in newIdList) {
 
             // TODO: This should probably be a SortedList, but lord is it a weird interface.
             val scoredArtists = HashMap<Double, String>()
