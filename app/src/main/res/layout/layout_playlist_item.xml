@@ -12,13 +12,14 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp">
+        android:layout_height="89dp"
+        android:background="#636262">
 
 
         <LinearLayout
             android:id="@+id/container1"
-            android:layout_width="411dp"
-            android:layout_height="80dp"
+            android:layout_width="440dp"
+            android:layout_height="86dp"
             android:padding="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -29,44 +30,41 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0">
 
-            <ImageView
-                android:id="@+id/img_album"
-                android:layout_width="71dp"
-                android:layout_height="65dp"
-                android:layout_margin="0dp"
-                android:adjustViewBounds="true"
-                android:padding="0dp"
-                android:paddingRight="5dp"
-                android:scaleType="fitXY"
-                tools:layout_editor_absoluteX="4dp"
-                tools:layout_editor_absoluteY="16dp" />
-
 
             <LinearLayout
                 android:id="@+id/container2"
-                android:layout_width="320dp"
-                android:layout_height="65dp"
+                android:layout_width="249dp"
+                android:layout_height="68dp"
                 android:orientation="vertical"
-                android:paddingLeft="10dp">
+                android:paddingStart="10dp">
 
                 <TextView
                     android:id="@+id/text_song"
-                    android:layout_width="280dp"
+                    android:layout_width="231dp"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="20dp"
-                    android:text="Song Name"
-                    android:textColor="#000"
+                    android:paddingStart="20dp"
+                    android:text="@string/song_name"
+                    android:textColor="#FFFFFF"
                     android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/text_artist"
-                    android:layout_width="280dp"
+                    android:layout_width="237dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:paddingLeft="20dp"
-                    android:text="Artist Name"
+                    android:paddingStart="20dp"
+                    android:text="@string/artist_name"
+                    android:textColor="#FFFFFF"
                     android:textSize="12sp" />
+
             </LinearLayout>
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="125dp"
+                android:layout_height="27dp"
+                android:contentDescription="@string/spotify"
+                app:srcCompat="@drawable/spotify_logo_rgb_green" />
 
 
         </LinearLayout>

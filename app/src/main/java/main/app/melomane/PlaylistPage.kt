@@ -1,9 +1,15 @@
 package main.app.melomane
 
+import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Button
 import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.kittinunf.fuel.core.extensions.jsonBody
 import com.github.kittinunf.fuel.httpGet
@@ -29,6 +35,26 @@ class PlaylistPage : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPlaylistBinding.inflate(layoutInflater)
+
+        var pm: PackageManager = this.packageManager
+        val isSpotifyInstalled: Boolean
+        isSpotifyInstalled = try {
+            pm.getPackageInfo("com.spotify.music", 0)
+            true
+        } catch (e: PackageManager.NameNotFoundException) {
+            false
+        }
+        if(isSpotifyInstalled){
+            binding.btnSpotify4.setOnClickListener {
+                openSpotify()
+            }
+        }
+        else{
+            binding.btnSpotify4.setOnClickListener {
+                installSpotify()
+            }
+        }
+
         val view = binding.root
         setContentView(view)
 
@@ -63,7 +89,12 @@ class PlaylistPage : AppCompatActivity() {
     }
 
     private fun initData(){
-        playlistAdapter.submitList(trackList)
+        if(trackList.size > 19){
+            playlistAdapter.submitList(trackList.subList(0,20))
+        }
+        else{
+            playlistAdapter.submitList(trackList)
+        }
         println("Finishing")
     }
 
@@ -214,10 +245,19 @@ class PlaylistPage : AppCompatActivity() {
     private fun exportPlaylist(pid: String) {
         val accessToken = intent.getStringExtra("access_token")
         val trackArray = JSONArray()
-        for(i in 0 until trackList.size){
-            val track = trackList[i]
-            val uri = track.uri
-            trackArray.put(i, uri)
+        if(trackList.size > 19){
+            for(i in 0 until 20){
+                val track = trackList[i]
+                val uri = track.uri
+                trackArray.put(i, uri)
+            }
+        }
+        else{
+            for(i in 0 until trackList.size){
+                val track = trackList[i]
+                val uri = track.uri
+                trackArray.put(i, uri)
+            }
         }
         val body = JSONObject()
         body.put("uris", trackArray)
@@ -245,6 +285,35 @@ class PlaylistPage : AppCompatActivity() {
             putExtra("name", name)
             putExtra("access_token", accessToken)
         }
+        startActivity(intent)
+    }
+
+    private fun installSpotify() {
+        val appPackageName = "com.spotify.music"
+        val referrer = "adjust_campaign=PACKAGE_NAME&adjust_tracker=ndjczk&utm_source=adjust_preinstall"
+
+        try {
+            val uri = Uri.parse("market://details")
+                    .buildUpon()
+                    .appendQueryParameter("id", appPackageName)
+                    .appendQueryParameter("referrer", referrer)
+                    .build()
+            startActivity(Intent(Intent.ACTION_VIEW, uri))
+        } catch (ignored: ActivityNotFoundException) {
+            val uri = Uri.parse("https://play.google.com/store/apps/details")
+                    .buildUpon()
+                    .appendQueryParameter("id", appPackageName)
+                    .appendQueryParameter("referrer", referrer)
+                    .build()
+            startActivity(Intent(Intent.ACTION_VIEW, uri))
+        }
+    }
+
+    private fun openSpotify() {
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.data = Uri.parse("spotify:album:0sNOF9WDwhWunNAHPD3Baj")
+        intent.putExtra(Intent.EXTRA_REFERRER,
+                Uri.parse("android-app://" + this.packageName))
         startActivity(intent)
     }
 }

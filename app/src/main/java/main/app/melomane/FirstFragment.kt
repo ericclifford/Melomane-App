@@ -1,7 +1,9 @@
 package main.app.melomane
 
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.util.Base64.*
@@ -9,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
 import androidx.fragment.app.Fragment
 import com.github.kittinunf.fuel.httpGet
 import com.github.kittinunf.fuel.httpPost
@@ -34,6 +37,14 @@ class FirstFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        var pm: PackageManager = requireContext().packageManager
+        val isSpotifyInstalled: Boolean
+        isSpotifyInstalled = try {
+            pm.getPackageInfo("com.spotify.music", 0)
+            true
+        } catch (e: PackageManager.NameNotFoundException) {
+            false
+        }
 
         view.findViewById<Button>(R.id.AuthorizeButton).setOnClickListener {
             authorizeSpotify()
@@ -42,8 +53,47 @@ class FirstFragment : Fragment() {
         view.findViewById<Button>(R.id.ViewProfile).setOnClickListener {
             getUserProfile()
         }
+
+        if(isSpotifyInstalled){
+            view.findViewById<ImageButton>(R.id.btn_spotify).setOnClickListener {
+                openSpotify()
+            }
+        }
+        else view.findViewById<ImageButton>(R.id.btn_spotify).setOnClickListener {
+            installSpotify()
+        }
+
+
     }
 
+    private fun installSpotify() {
+        val appPackageName = "com.spotify.music"
+        val referrer = "adjust_campaign=PACKAGE_NAME&adjust_tracker=ndjczk&utm_source=adjust_preinstall"
+
+        try {
+            val uri = Uri.parse("market://details")
+                    .buildUpon()
+                    .appendQueryParameter("id", appPackageName)
+                    .appendQueryParameter("referrer", referrer)
+                    .build()
+            startActivity(Intent(Intent.ACTION_VIEW, uri))
+        } catch (ignored: ActivityNotFoundException) {
+            val uri = Uri.parse("https://play.google.com/store/apps/details")
+                    .buildUpon()
+                    .appendQueryParameter("id", appPackageName)
+                    .appendQueryParameter("referrer", referrer)
+                    .build()
+            startActivity(Intent(Intent.ACTION_VIEW, uri))
+        }
+    }
+
+    private fun openSpotify() {
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.data = Uri.parse("spotify:album:0sNOF9WDwhWunNAHPD3Baj")
+        intent.putExtra(Intent.EXTRA_REFERRER,
+                Uri.parse("android-app://" + requireContext().packageName))
+        startActivity(intent)
+    }
 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

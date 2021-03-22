@@ -40,14 +40,14 @@ class ArtistRecyclerAdapter(val intent: Intent) : RecyclerView.Adapter<ArtistRec
             itemBinding.createPlaylist.setOnClickListener {
                 getPlaylist(this, artist)
             }
-            val requestOptions = RequestOptions()
-                .placeholder(R.drawable.ic_launcher_background)
-                .error(R.drawable.ic_launcher_background)
+//            val requestOptions = RequestOptions()
+//                .placeholder(R.drawable.ic_launcher_background)
+//                .error(R.drawable.ic_launcher_background)
 
-            Glide.with(itemView.context)
-                .applyDefaultRequestOptions(requestOptions)
-                .load(artist.image)
-                .into(itemBinding.imgArtist)
+//            Glide.with(itemView.context)
+//                .applyDefaultRequestOptions(requestOptions)
+//                .load(artist.image)
+//                .into(itemBinding.imgArtist)
         }
 
         private fun getPlaylist(view: RecyclerView.ViewHolder, artist: Artist) {

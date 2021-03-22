@@ -8,6 +8,30 @@
     android:textAlignment="center"
     tools:context=".Timeline">
 
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/powered_by"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_spotify2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageButton
+        android:id="@+id/btn_spotify2"
+        android:layout_width="271dp"
+        android:layout_height="81dp"
+        android:layout_marginBottom="8dp"
+        android:contentDescription="@string/spotify"
+        android:scaleType="fitCenter"
+        android:src="@drawable/spotify_logo_rgb_green"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.492"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <ImageButton
         android:id="@+id/btn_playlist"
         style="@android:style/Widget.Holo.Light.ImageButton"
@@ -16,6 +40,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:adjustViewBounds="true"
+        android:contentDescription="@string/playlist"
         android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -29,7 +54,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:text="Generate Playlist"
+        android:text="@string/generate_playlist"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
         android:textSize="30sp"
@@ -45,7 +70,7 @@
         android:layout_width="113dp"
         android:layout_height="41dp"
         android:layout_marginBottom="64dp"
-        android:text="Search"
+        android:text="@string/search"
         app:layout_constraintBottom_toTopOf="@+id/lbl_playlist"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -56,7 +81,7 @@
         android:layout_height="42dp"
         android:backgroundTint="#7E7C7C"
         android:ems="10"
-        android:hint="Search by artist . . ."
+        android:hint="@string/search_by"
         android:inputType="textPersonName"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
@@ -66,6 +91,7 @@
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.827" />
+        app:layout_constraintVertical_bias="0.827"
+        android:autofillHints="" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
