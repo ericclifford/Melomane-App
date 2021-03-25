@@ -44,8 +44,8 @@
 
     <Button
         android:id="@+id/btn_export"
-        android:layout_width="264dp"
-        android:layout_height="49dp"
+        android:layout_width="310dp"
+        android:layout_height="79dp"
         android:text="@string/export_"
         android:textSize="18sp"
         app:iconTint="#FFFFFF"
