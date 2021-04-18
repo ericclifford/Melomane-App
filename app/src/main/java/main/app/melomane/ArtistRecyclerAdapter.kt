@@ -56,7 +56,7 @@ class ArtistRecyclerAdapter(val intent: Intent) : RecyclerView.Adapter<ArtistRec
             val name = intent.getStringExtra("name")
             val intent = Intent(view.itemView.context, PlaylistPage::class.java).apply {
                 putExtra("id", id)
-                putExtra("name", name)
+                putExtra("artistName", artist.name)
                 putExtra("access_token", accessToken)
                 putExtra("artistId", artist.id)
             }
