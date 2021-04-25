@@ -69,10 +69,11 @@
         android:id="@+id/btn_search"
         android:layout_width="113dp"
         android:layout_height="41dp"
-        android:layout_marginBottom="64dp"
+        android:layout_marginBottom="68dp"
         android:text="@string/search"
         app:layout_constraintBottom_toTopOf="@+id/lbl_playlist"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.53"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
@@ -93,5 +94,21 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.827"
         android:autofillHints="" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="360dp"
+        android:layout_height="44dp"
+        android:layout_marginBottom="100dp"
+        android:text="@string/main_tip"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/textView6"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.49"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_playlist"
+        app:layout_constraintVertical_bias="1.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
