@@ -33,14 +33,14 @@ class PlaylistRecyclerAdapter : RecyclerView.Adapter<PlaylistRecyclerAdapter.Pla
             itemBinding.textArtist.text = track.artist
             itemBinding.textSong.text = track.name
 
-//            val requestOptions = RequestOptions()
-//                    .placeholder(R.drawable.ic_launcher_background)
-//                    .error(R.drawable.ic_launcher_background)
+            val requestOptions = RequestOptions()
+                    .placeholder(R.drawable.ic_launcher_background)
+                    .error(R.drawable.ic_launcher_background)
 
-//            Glide.with(itemView.context)
-//                .applyDefaultRequestOptions(requestOptions)
-//                .load(track.image)
-//                .into(itemBinding.imgAlbum)
+            Glide.with(itemView.context)
+                .applyDefaultRequestOptions(requestOptions)
+                .load(track.image)
+                .into(itemBinding.imgAlbum)
         }
     }
 }

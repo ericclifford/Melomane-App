@@ -12,14 +12,15 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="89dp"
-        android:background="#636262">
+        android:layout_height="match_parent"
+        android:background="#636262"
+        tools:layout_editor_absoluteY="1dp">
 
 
         <LinearLayout
             android:id="@+id/container1"
-            android:layout_width="440dp"
-            android:layout_height="86dp"
+            android:layout_width="384dp"
+            android:layout_height="85dp"
             android:padding="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -31,28 +32,35 @@
             app:layout_constraintVertical_bias="0.0">
 
 
+            <ImageView
+                android:id="@+id/imgAlbum"
+                android:layout_width="0dp"
+                android:layout_height="63dp"
+                android:layout_weight="1"
+                android:contentDescription="@string/album"
+                app:srcCompat="?attr/listChoiceBackgroundIndicator" />
+
             <LinearLayout
                 android:id="@+id/container2"
-                android:layout_width="249dp"
-                android:layout_height="68dp"
+                android:layout_width="191dp"
+                android:layout_height="77dp"
                 android:orientation="vertical"
-                android:paddingStart="10dp">
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp">
 
                 <TextView
                     android:id="@+id/text_song"
-                    android:layout_width="231dp"
+                    android:layout_width="175dp"
                     android:layout_height="wrap_content"
-                    android:paddingStart="20dp"
                     android:text="@string/song_name"
                     android:textColor="#FFFFFF"
                     android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/text_artist"
-                    android:layout_width="237dp"
+                    android:layout_width="175dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:paddingStart="20dp"
                     android:text="@string/artist_name"
                     android:textColor="#FFFFFF"
                     android:textSize="12sp" />
@@ -61,8 +69,9 @@
 
             <ImageView
                 android:id="@+id/imageView"
-                android:layout_width="125dp"
-                android:layout_height="27dp"
+                android:layout_width="105dp"
+                android:layout_height="24dp"
+                android:baselineAligned="false"
                 android:contentDescription="@string/spotify"
                 app:srcCompat="@drawable/spotify_logo_rgb_green" />
 
